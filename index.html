@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Moonlight 2.0 Interactive Prototype</title></head>
+<body><div id="prototype-root"></div><script>
+(async()=>{const get=p=>fetch(p).then(r=>r.text());const parts=['fragments/part-1.html','fragments/part-2.html'];let[css,html,...images]=await Promise.all([get('app.css'),Promise.all(parts.map(get)).then(x=>x.join('')),...[1,2,3].map(n=>get(`assets/moonlight-${n}.b64`))]);images.forEach((b64,i)=>{const from=`assets/moonlight-${i+1}.webp`,to=`data:image/webp;base64,${b64}`;css=css.split(from).join(to);html=html.split(from).join(to)});const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);document.getElementById('prototype-root').outerHTML=html;for(const src of ['app-1.js','app-2.js']){await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.body.appendChild(s)})}})();
+</script></body></html>
